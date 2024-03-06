@@ -27,74 +27,86 @@ inquirer
     },
   ])
   .then((response) => {
-    console.log(response);
+    let icon;
     if (response.logoShape === "circle") {
-      const circle = new Circle(
+      icon = new Circle(
         response.logoText,
-        response.textColor,
-        response.shapeColor
+        response.shapeColor,
+        response.textColor
       );
-      console.log(circle);
     } else if (response.logoShape === "square") {
-      const square = new Square(
+      icon = new Square(
         response.logoText,
-        response.textColor,
-        response.shapeColor
+        response.shapeColor,
+        response.textColor
       );
-      console.log(square);
     } else if (response.logoShape === "triangle") {
-      const triangle = new Triangle(
+      icon = new Triangle(
         response.logoText,
-        response.textColor,
-        response.shapeColor
+        response.shapeColor,
+        response.textColor
       );
-      console.log(triangle);
     }
+    const logo = icon.render();
+    fs.writeFile("logo.svg", logo, (err) =>
+      err ? console.log(err) : console.log("Generated logo.svg")
+    );
   });
 
-//Child classes for icon
-function Circle(logoText, textColor, shapeColor) {
-  Shape.call(this, logoText, textColor, shapeColor);
-  console.log("Circle created");
+class Circle {
+  constructor(logoText, shapeColor, textColor) {
+    this.logoText = logoText;
+    this.shapeColor = shapeColor;
+    this.textColor = textColor;
+  }
+
+  render() {
+    return `<svg version="1.1"
+    width="300" height="200"
+    xmlns="http://www.w3.org/2000/svg">
+       <circle cx="150" cy="125" r="80" fill="${this.shapeColor}" />
+     <text x="150" y="125" font-size="60" text-anchor="middle" fill="${this.textColor}">${this.logoText}</text>
+
+     </svg>
+`;
+  }
 }
 
-function Square(logoText, textColor, shapeColor) {
-  Shape.call(this, logoText, textColor, shapeColor);
-  console.log("Square created");
+class Square {
+  constructor(logoText, shapeColor, textColor) {
+    this.logoText = logoText;
+    this.shapeColor = shapeColor;
+    this.textColor = textColor;
+  }
+
+  render() {
+    return `<svg version="1.1"
+    width="300" height="200"
+    xmlns="http://www.w3.org/2000/svg">
+    <rect x="62.5" y="10" width="175" height="175" fill="${this.shapeColor}"/>
+     <text x="150" y="115" font-size="60" text-anchor="middle" fill="${this.textColor}">${this.logoText}</text>
+
+     </svg>
+`;
+  }
 }
 
-function Triangle(logoText, textColor, shapeColor) {
-  Shape.call(this, logoText, textColor, shapeColor);
-  console.log("Triangle created");
-}
+class Triangle {
+  constructor(logoText, shapeColor, textColor) {
+    this.logoText = logoText;
+    this.shapeColor = shapeColor;
+    this.textColor = textColor;
+  }
 
-//Parent class for icon
-function Shape(logoText, textColor, shapeColor) {
-  this.xmlns = "http://www.w3.org/2000/svg";
-  this.height = "200px";
-  this.width = "300px";
-  this.logoText = logoText;
-  this.textColor = textColor;
-  this.shapeColor = shapeColor;
+  render() {
+    return `<svg version="1.1"
+    width="300" height="200"
+    xmlns="http://www.w3.org/2000/svg">
+    <polygon points="150 5 5 195 295 195"
+    fill="${this.shapeColor}"/>
+     <text x="150" y="160" font-size="60" text-anchor="middle" fill="${this.textColor}">${this.logoText}</text>
 
-  this.printData = function () {
-    console.log("Generated logo.svg");
-  };
-}
-
-//console.log(icon);
-//<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-{
-  /* <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-</svg> */
-}
-{
-  /* <svg width="300" height="130" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="100" x="10" y="10" rx="20" ry="20" fill="blue" />
-</svg> */
-}
-{
-  /* <svg height="220" width="500" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="200,10 250,190 150,190" style="fill:lime;stroke:purple;stroke-width:3" />
-</svg> */
+     </svg>
+`;
+  }
 }
